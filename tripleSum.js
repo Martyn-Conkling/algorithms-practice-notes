@@ -59,7 +59,7 @@ function tripleSumChecker(array,targetSum){
 
 };
 //Problems with this...
-//Slow, array.length-2**3 if statement checks!!!!
+//Slow, array.length-2**3 if statement checks at least!!!!
 //lots of unessesary checking
 //doing this the dumbest way possible
 //Solution sums are in a random order
@@ -70,12 +70,14 @@ function tripleSumChecker(array,targetSum){
 //It is easy to read
 //Conceptually it makes sense
 //We know we checked EVERY combination
+//leverages the speed of computers
+
 
 
 
 
 //How can we do this logic BETTER?
-//With.... 1 loop only
+//With lets say.... 1 loop only? no nested loops?
 // and 3 pointer variables?
 
 function tripleSumChecker(array,targetSum){
