@@ -8,34 +8,23 @@ function isMonotonic(array) {
     // Write your code here.
     let nonIncreasing = true;
     let nonDecreasing = true;
-    
-    let previousElement = array[0];
   
     let index = 1;
     
     //I like this solution because it can exit the loop before you finish iterating over the array if it fails to be monotonic
     while((nonIncreasing || nonDecreasing) && index < array.length ){
   
-      if(previousElement > array[index]){
+      if(array[index-1] > array[index]){
         nonDecreasing = false;
       }
-      if(previousElement < array[index]){
+      if(array[index-1] < array[index]){
         nonIncreasing = false;
       }
-      
-     console.log(previousElement)
-       previousElement = array[index];
-      console.log(previousElement);
-       index++;
-      
+        index++;
     }
   
-    if(!nonIncreasing && !nonDecreasing){
-      return false;
-    }
-    else{
-      return true;
-    }
+    return (nonIncreasing || nonDecreasing);
+    
   
     
   }
