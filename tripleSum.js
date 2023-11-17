@@ -40,7 +40,7 @@ or an empty array if there are no triple sums that add up to the target sum
 function tripleSumChecker(array,targetSum){
     answerArray =[];
     //Sort the array from smallest to largest
-     array.sort((a,b)=> a-b)
+    array.sort((a,b)=> a-b);
     // let myArray = [1,2,3,4,8,9,11,12,13,23,27];
 
     // we need some kind of looping
@@ -58,6 +58,7 @@ function tripleSumChecker(array,targetSum){
     return answerArray;
 
 };
+
 //Problems with this...
 //Slow, array.length-2**3 if statement checks at least!!!!
 //lots of unessesary checking
