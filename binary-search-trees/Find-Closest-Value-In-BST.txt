@@ -1,0 +1,47 @@
+Find Closest Value in BST
+
+Write a function that takes in a Binary Search Tree, 
+and a target integer value and returns the closest value to that target value contained in the BST.
+You can assume that there will only be one closes value.
+Each BST node has an integer, value, a left child node, and a right child.
+A node is said to be a valid BST node if and only if it satisfies the BST property: its value is strictly greater than the values of every node to its left;
+its value is less than or equal to the values of every node to its right and its children nodes are either valid BST nodes themselves or None/null
+
+
+
+function findClosestValueInBst(tree, target) {
+  
+	//This is a recursive Solution
+	return helperFunction(tree, target, tree.value)
+	
+}
+
+function helperFunction (tree, target, closest){
+	if (tree === null){return closest};
+	if (Math.abs(target - closest) > Math.abs(target - tree.value)){
+		closest = tree.value;
+	}
+	if(target < tree.value){
+		return helperFunction(tree.left, target, closest);
+	} else if (target > tree.value){
+		return helperFunction(tree.right, target, closest);
+	} else {
+		return tree.value
+		// could also be return closest
+	}
+}
+
+
+
+// This is the class of the input tree. Do not edit.
+class BST {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+// Do not edit the line below.
+exports.findClosestValueInBst = findClosestValueInBst;
+
