@@ -80,7 +80,7 @@ after creating the first row and the first column of the table,
 I will run through r*c calculations, where r is str1.length, and c is str2.length,
 
 This will limit  my time complexity to O(r*c) or O(str1.length*str2.length), and I am not sure about how to calculate the space complexity scaling for the 2D array, 
-the 2D array will have r*c elements to be stored in the 2D array, so the space complexity scales up linearly with the minimum of the 2 string lengths.
+the 2D array will have r*c elements to be stored in the 2D array, so the space complexity scales up linearly with O(r*c) where r and c are the lengths of the 2 strings
 
   */
 
@@ -123,11 +123,28 @@ the 2D array will have r*c elements to be stored in the 2D array, so the space c
     }
   
     return LDArray[str1.length][str2.length]; 
-  }
+}
   
 
 //Improving my solution code for efficiency and readibility 
-  function levenshteinDistance2(str1, str2) {
+ 
+/*
+example:
+
+str1 = "abc"
+str2 = "yabd"
+
+Filling in the table, calculating all of the differences between the 2 substrings...
+
+   "", y, a, b, d
+""  0, 1, 2, 3, 4
+a   1, 1, 1, 2, 3
+b   2, 2, 2, 1, 2
+c   3, 3, 3, 2, 2 
+*/
+
+//O(nm) time | O(n*m) space where n and m are the lengths of the two input strings
+function levenshteinDistance2(str1, str2) {
     //I can probably save time by just creating the first row, 
     //and the first element value in the following rows, before starting my algorithm calculations
     let LDArray= [];
@@ -156,3 +173,103 @@ the 2D array will have r*c elements to be stored in the 2D array, so the space c
     return LDArray[str1.length][str2.length];
 
   }
+
+//Optimized for space complexity to only store 2 rows in the LDArray, saving space!
+//O(nm) time | O(min(n,m)) space where n and m are the lengths of the two input strings
+function levenshteinDistance3(str1, str2) {
+    // Finds the shorter of the 2 strings
+    let shorterString;
+    let longerString;
+    if(str1.length <= str2.length){
+        shorterString = str1;
+        longerString = str2;
+    }else{
+        shorterString = str2;
+        longerString = str1;
+    }
+
+    let LDArray= new Array(0);
+    let firstRow = new Array(0);
+  
+    for (let i = 0; i <= shorterString.length; i++){
+      firstRow.push(i);
+    }
+    LDArray.push(firstRow);
+    
+    //firstRow should now contain the values 0 through shorterString.length
+    
+    let r = 1;
+    while(r <= longerString.length){
+     let newRow = [r];
+     LDArray.push(newRow)
+      let c = 1;
+      while(c <= shorterString.length){
+        if(longerString[r-1] === shorterString[c-1]){
+        // This sets the current location of LDArray[1][c] equal to the value that is diagonally up and to the left
+          LDArray[1][c] = LDArray[0][c-1]; 
+        }else{ LDArray[1][c] = 1 + Math.min(LDArray[1][c-1], LDArray[0][c], LDArray[0][c-1])}
+        c++;
+      }
+      LDArray.shift();
+      r++;
+    }
+  
+    return LDArray[0][shorterString.length];
+
+
+}
+
+//Optimized even further to avoid needing to create new arrays
+//O(nm) time | O(min(n,m)) space where n and m are the lengths of the two input strings
+function levenshteinDistance4(str1, str2) {
+    //Can save space by just creating 2 arrays for 2 rows, instead of the entire 2D array!
+    //Can avoid unnessesary reallocation or recreation of the arrays by just swapping the 2 row arrays after finishing the new "currentRow"
+
+ // Swap strings if the first is shorter than the second
+ // Keeps our space complexity to the smallest it needs to be O(min(str1.length,str2.length))
+  if (str1.length > str2.length) {
+    [str1, str2] = [str2, str1];
+  }
+
+  const len1 = str1.length;
+  const len2 = str2.length;
+  let prevRow = new Array(len1 + 1);
+  let currentRow = new Array(len1 + 1);
+
+  // Initialize the first prevRow
+  for (let i = 0; i <= len1; i++) {
+    prevRow[i] = i;
+  }
+
+  // Fill in the rest of the table
+  for (let i = 1; i <= len2; i++) {
+    currentRow[0] = i;
+
+    for (let j = 1; j <= len1; j++) {
+      /*
+      let insertCost = currentRow[j - 1] + 1;
+      let deleteCost = prevRow[j] + 1;
+      let replaceCost = str1[j - 1] === str2[i - 1] ? prevRow[j - 1] : prevRow[j - 1] + 1;
+
+      currentRow[j] = Math.min(insertCost, deleteCost, replaceCost);
+      */
+      
+      //Alternatively
+      if(str2[i-1] === str1[j-1]){
+        currentRow[j] = prevRow[j-1];
+      }else{
+        currentRow[j] = 1 + Math.min(currentRow[j-1],prevRow[j], prevRow[j-1])
+      }
+      
+    }
+
+    // Swap the rows for the next iteration
+    // Eliminates the need to create a new array for currentRow, I think this should be faster
+    [prevRow, currentRow] = [currentRow, prevRow];
+  }
+
+  // The last element of prevRow is the answer
+  return prevRow[len1];
+
+   
+}
