@@ -15,7 +15,6 @@ function minNumberOfCoinsForChange(n, denoms) {
     return numCoins[n] === Infinity ? -1 : numCoins[n];
   }
 
-
 // O(n) time | O(1) space - where n is the length of the input array
 function maxSubsetSumNoAdjacent(array) {
 

@@ -13,7 +13,7 @@ class BinaryTree {
       this.left = null;
       this.right = null;
     }
-  }
+}
   
   function branchSums(root) {
       const sums = [];
