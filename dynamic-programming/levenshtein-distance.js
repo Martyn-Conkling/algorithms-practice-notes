@@ -225,7 +225,7 @@ function levenshteinDistance4(str1, str2) {
     //Can save space by just creating 2 arrays for 2 rows, instead of the entire 2D array!
     //Can avoid unnessesary reallocation or recreation of the arrays by just swapping the 2 row arrays after finishing the new "currentRow"
 
- // Swap strings if the first is shorter than the second
+ // Swap strings if the first is longer than the second
  // Keeps our space complexity to the smallest it needs to be O(min(str1.length,str2.length))
   if (str1.length > str2.length) {
     [str1, str2] = [str2, str1];
@@ -233,24 +233,24 @@ function levenshteinDistance4(str1, str2) {
 
   const len1 = str1.length;
   const len2 = str2.length;
-  let prevRow = new Array(len1 + 1);
-  let currentRow = new Array(len1 + 1);
+  let prevRow = [];
+  let currentRow = [];
 
   // Initialize the first prevRow
   for (let i = 0; i <= len1; i++) {
     prevRow[i] = i;
   }
 
-  // Fill in the rest of the table
+  // Fill in the next row of the table
   for (let i = 1; i <= len2; i++) {
     currentRow[0] = i;
-
+    
+    // using the shorter of the two strings to save on memory
     for (let j = 1; j <= len1; j++) {
       /*
       let insertCost = currentRow[j - 1] + 1;
       let deleteCost = prevRow[j] + 1;
       let replaceCost = str1[j - 1] === str2[i - 1] ? prevRow[j - 1] : prevRow[j - 1] + 1;
-
       currentRow[j] = Math.min(insertCost, deleteCost, replaceCost);
       */
       
@@ -260,14 +260,12 @@ function levenshteinDistance4(str1, str2) {
       }else{
         currentRow[j] = 1 + Math.min(currentRow[j-1],prevRow[j], prevRow[j-1])
       }
-      
     }
 
     // Swap the rows for the next iteration
     // Eliminates the need to create a new array for currentRow, I think this should be faster
     [prevRow, currentRow] = [currentRow, prevRow];
   }
-
   // The last element of prevRow is the answer
   return prevRow[len1];
 

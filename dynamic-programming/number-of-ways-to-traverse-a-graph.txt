@@ -1,0 +1,22 @@
+function numberOfWaysToTraverseGraph(width, height) {
+  // Write your code here.
+
+  numberOfWaysArray = []
+  
+  for(let i =0; i < height; i++){
+    let row = new Array(width);
+    numberOfWaysArray.push(row);
+  }
+
+  for(let heightIndex = 0; heightIndex < height; heightIndex++){
+    for(let widthIndex = 0; widthIndex < width; widthIndex++{
+      if(widthIndex ===1 || heightIndex ===1){
+        numberOfWaysArray[heightIndex][widthIndex] = 1;
+      }
+      else{
+        waysLeft
+      }
+    }
+  }
+  return 0;
+}
